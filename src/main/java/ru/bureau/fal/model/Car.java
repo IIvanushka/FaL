@@ -1,8 +1,7 @@
 package ru.bureau.fal.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "cars")
@@ -43,6 +42,9 @@ public class Car extends BaseEntity {
 
     @Column(name = "summer_time")
     private boolean summerTime;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "carId")
+    private List<Trip> trips;
 
 
     public Car() {
@@ -144,6 +146,14 @@ public class Car extends BaseEntity {
         this.summerTime = summerTime;
     }
 
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
+
     @Override
     public String toString() {
         return "Car{" +
@@ -159,6 +169,7 @@ public class Car extends BaseEntity {
                 ", warmup=" + warmup +
                 ", prostoy=" + prostoy +
                 ", summerTime=" + summerTime +
+                ", trips=" + trips +
                 '}';
     }
 }

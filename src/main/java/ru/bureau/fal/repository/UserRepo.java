@@ -1,4 +1,4 @@
-package ru.bureau.fal.model.repository;
+package ru.bureau.fal.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import ru.bureau.fal.model.User;

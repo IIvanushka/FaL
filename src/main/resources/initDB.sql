@@ -52,7 +52,7 @@ INSERT INTO cars (user_id, description) VALUES (100000, 'Pathfinder');
 CREATE TABLE trips (
   id           INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   car_id       INTEGER                          NOT NULL,
-  date         DATE DEFAULT now()               NOT NULL,
+  date         TIMESTAMP DEFAULT now()               NOT NULL,
   mileage_c    FLOAT4 DEFAULT 0                 NOT NULL,
   mileage_r    FLOAT4 DEFAULT 0                 NOT NULL,
   warmup_time  TIME DEFAULT '00:00:00'          NOT NULL,

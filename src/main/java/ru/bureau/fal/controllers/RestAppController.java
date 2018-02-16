@@ -1,4 +1,4 @@
-package ru.bureau.fal.model.controllers;
+package ru.bureau.fal.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bureau.fal.model.Car;
 import ru.bureau.fal.model.User;
-import ru.bureau.fal.model.service.AppService;
-import ru.bureau.fal.model.service.UserService;
+import ru.bureau.fal.service.AppService;
+import ru.bureau.fal.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;

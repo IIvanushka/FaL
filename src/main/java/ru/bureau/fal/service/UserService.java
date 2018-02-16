@@ -1,10 +1,10 @@
-package ru.bureau.fal.model.service;
+package ru.bureau.fal.service;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bureau.fal.model.User;
-import ru.bureau.fal.model.repository.UserRepo;
+import ru.bureau.fal.repository.UserRepo;
 
 import java.util.List;
 
