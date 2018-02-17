@@ -7,5 +7,5 @@ import java.util.List;
 
 
 public interface TripRepo extends CrudRepository<Trip, Integer> {
-    List<Trip> findOneByCarId(Integer id);
+    List<Trip> findTripByCarId(Integer id);
 }

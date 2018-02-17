@@ -23,8 +23,12 @@ public class AppService {
     @Autowired
     private TripRepo tripRepo;
 
-    public List<Car> getAllCars() {
-        return (List<Car>) carRepo.findAll();
+    public List<Car> getAllCarsByUserId(Integer id) {
+        return carRepo.getAllCarsByUserId(id);
+    }
+
+    public Car getCarById(Integer id) {
+        return carRepo.getCarById(id);
     }
 
     public Car createOrUpdateCar(Car car) {
@@ -41,7 +45,7 @@ public class AppService {
         return tripRepo.save(trip);
     }
 
-    public List<Trip> getAllTripsbyCarId(Integer id){
-        return tripRepo.findOneByCarId(id);
+    public List<Trip> getAllTripsByCarId(Integer id){
+        return tripRepo.findTripByCarId(id);
     }
 }

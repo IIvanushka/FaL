@@ -1,13 +1,13 @@
 package ru.bureau.fal.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.bureau.fal.Util.DateTimeUtil;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -45,6 +45,12 @@ public class Trip extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id", insertable = false, updatable = false, nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @NotNull(groups = View.Persist.class)
+    private Car car;
 
     public Trip() {
     }

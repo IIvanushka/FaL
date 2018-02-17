@@ -48,6 +48,7 @@ CREATE TABLE cars (
 );
 
 INSERT INTO cars (user_id, description) VALUES (100000, 'Pathfinder');
+INSERT INTO cars (user_id, description) VALUES (100000, 'Opel');
 
 CREATE TABLE trips (
   id           INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -63,3 +64,7 @@ CREATE TABLE trips (
   timestamp    TIMESTAMP DEFAULT now()          NOT NULL,
   FOREIGN KEY (car_id) REFERENCES cars (id) ON DELETE CASCADE
 );
+
+INSERT INTO trips(car_id, fuel_left, description) VALUES (100002,25,'Test_Trip');
+INSERT INTO trips(car_id, fuel_left, description) VALUES (100002,20,'Test_Trip2');
+INSERT INTO trips(car_id, fuel_left, description) VALUES (100003,500,'Test_Trip3');

@@ -1,5 +1,7 @@
 package ru.bureau.fal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
 public class Car extends BaseEntity {
 
     @Column(name = "user_id")
-    private Integer iduser;
+    private Integer userId;
 
     @Column(name = "active")
     private boolean active;
@@ -43,19 +45,20 @@ public class Car extends BaseEntity {
     @Column(name = "summer_time")
     private boolean summerTime;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "carId")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car")
     private List<Trip> trips;
 
 
     public Car() {
     }
 
-    public Integer getIduser() {
-        return iduser;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setIduser(Integer iduser) {
-        this.iduser = iduser;
+    public void setUserId(Integer iduser) {
+        this.userId = iduser;
     }
 
     public boolean isActive() {
@@ -157,7 +160,7 @@ public class Car extends BaseEntity {
     @Override
     public String toString() {
         return "Car{" +
-                "iduser=" + iduser +
+                "iduser=" + userId +
                 ", active=" + active +
                 ", description='" + description + '\'' +
                 ", mileage=" + mileage +
@@ -169,7 +172,7 @@ public class Car extends BaseEntity {
                 ", warmup=" + warmup +
                 ", prostoy=" + prostoy +
                 ", summerTime=" + summerTime +
-                ", trips=" + trips +
+//                ", trips=" + trips +
                 '}';
     }
 }
