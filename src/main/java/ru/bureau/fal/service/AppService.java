@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-@Service
+@Service("AppService")
 public class AppService {
 
     private static final Logger log = getLogger(AppService.class);
@@ -47,5 +47,13 @@ public class AppService {
 
     public List<Trip> getAllTripsByCarId(Integer id){
         return tripRepo.findTripByCarId(id);
+    }
+
+    public void deleteCar(int id) {
+        carRepo.delete(id);
+    }
+
+    public void deleteTrip(int id) {
+        tripRepo.delete(id);
     }
 }

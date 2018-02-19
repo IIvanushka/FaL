@@ -1,6 +1,7 @@
 package ru.bureau.fal.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.bureau.fal.Util.AuthoriezedUser;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = RestAppController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestAppController {
-    static final String REST_URL = "/rest/";
+    public static final String REST_URL = "/rest/";
 
     @Autowired
     private UserService userService;
@@ -44,10 +45,31 @@ public class RestAppController {
         return appService.getAllTripsByCarId(id);
     }
 
+    @PutMapping(value = "/trips/{carId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Trip PutTripsByCarId(@PathVariable("carId") Integer id, @Valid Trip trip) {
+        trip.setCarId(id);
+        return appService.createOrUpdateTrip(trip);
+    }
+
     @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User createOrUpdate(@Valid User user) {
+    public User createOrUpdateUser(@Valid User user) {
         return userService.createOrUpdate(user);
     }
 
+    @PostMapping(value = "/cars", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Car createOrUpdateCar(@Valid Car car) {
+        return appService.createOrUpdateCar(car);
+    }
 
+    @DeleteMapping("/cars/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteCar(@PathVariable("id") int id) {
+        appService.deleteCar(id);
+    }
+
+    @DeleteMapping("/trips/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteTrip(@PathVariable("id") int id) {
+        appService.deleteTrip(id);
+    }
 }

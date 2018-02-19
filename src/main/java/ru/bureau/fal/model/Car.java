@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cars")
@@ -51,6 +52,22 @@ public class Car extends BaseEntity {
 
 
     public Car() {
+    }
+
+    public Car(Integer userId, boolean active, String description, Integer mileage, Float fuel,
+               Float winterCity, Float winterRoad, Float summer, Float summerRoad, Float warmup, Float prostoy, boolean summerTime) {
+        this.userId = userId;
+        this.active = active;
+        this.description = description;
+        this.mileage = mileage;
+        this.fuel = fuel;
+        this.winterCity = winterCity;
+        this.winterRoad = winterRoad;
+        this.summer = summer;
+        this.summerRoad = summerRoad;
+        this.warmup = warmup;
+        this.prostoy = prostoy;
+        this.summerTime = summerTime;
     }
 
     public Integer getUserId() {
@@ -174,5 +191,30 @@ public class Car extends BaseEntity {
                 ", summerTime=" + summerTime +
 //                ", trips=" + trips +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return active == car.active &&
+                summerTime == car.summerTime &&
+                Objects.equals(userId, car.userId) &&
+                Objects.equals(description, car.description) &&
+                Objects.equals(mileage, car.mileage) &&
+                Objects.equals(fuel, car.fuel) &&
+                Objects.equals(winterCity, car.winterCity) &&
+                Objects.equals(winterRoad, car.winterRoad) &&
+                Objects.equals(summer, car.summer) &&
+                Objects.equals(summerRoad, car.summerRoad) &&
+                Objects.equals(warmup, car.warmup) &&
+                Objects.equals(prostoy, car.prostoy);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(userId, active, description, mileage, fuel, winterCity, winterRoad, summer, summerRoad, warmup, prostoy, summerTime);
     }
 }

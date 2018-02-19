@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-@Service
+@Service("UserService")
 public class UserService {
 
     private static final Logger log = getLogger(UserService.class);
