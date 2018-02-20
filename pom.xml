@@ -64,6 +64,16 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>${jackson-json.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.9.3</version>
+        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate5</artifactId>
+			<version>2.9.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>

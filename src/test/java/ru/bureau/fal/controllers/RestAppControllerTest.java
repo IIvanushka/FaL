@@ -1,22 +1,21 @@
 package ru.bureau.fal.controllers;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.json.UTF8DataInputJsonParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.bureau.fal.FalApplicationTests;
+import ru.bureau.fal.Util.JacksonObjectMapper;
 import ru.bureau.fal.model.Car;
+import ru.bureau.fal.model.Trip;
 import ru.bureau.fal.service.AppService;
 
 import javax.annotation.PostConstruct;
@@ -25,12 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.bureau.fal.TestData.OBJECT_MAPPER;
-import static ru.bureau.fal.TestData.carOpel;
-import static ru.bureau.fal.TestData.carPathfinder;
+import static ru.bureau.fal.TestData.*;
+import static ru.bureau.fal.Util.JacksonObjectMapper.*;
 
 public class RestAppControllerTest extends FalApplicationTests {
 
@@ -59,10 +59,10 @@ public class RestAppControllerTest extends FalApplicationTests {
                 .build();
     }
 
-    @Before
-    public void setUp() throws Exception {
-
-    }
+//    @Before
+//    public void setUp() throws Exception {
+//
+//    }
 
     @Test
     public void getAllUsers() throws Exception {
@@ -86,11 +86,11 @@ public class RestAppControllerTest extends FalApplicationTests {
         List<Car> returnedCars = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject carJ = jsonArray.getJSONObject(i);
-            Car car = OBJECT_MAPPER.readValue(carJ.toString(), Car.class);
+            Car car = getMapper().readValue(carJ.toString(), Car.class);
             returnedCars.add(car);
         }
-        Assert.assertEquals(carPathfinder, returnedCars.get(0));
-        Assert.assertEquals(carOpel, returnedCars.get(1));
+        Assert.assertEquals(CAR_PATHFINDER, returnedCars.get(0));
+        Assert.assertEquals(CAR_OPEL, returnedCars.get(1));
     }
 
     @Test
@@ -101,28 +101,41 @@ public class RestAppControllerTest extends FalApplicationTests {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andReturn();
         String jsonStr = result.getResponse().getContentAsString();
-        Car car = OBJECT_MAPPER.readValue(jsonStr, Car.class);
-        Assert.assertEquals(carPathfinder, car);
+        Car car = getMapper().readValue(jsonStr, Car.class);
+        Assert.assertEquals(CAR_PATHFINDER, car);
     }
 
     @Test
     public void getTripsByCarId() throws Exception {
-        mockMvc.perform(get(REST_URL + "trips/100002"))
+        MvcResult result = mockMvc.perform(get(REST_URL + "trips/100002"))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andReturn();
+        String jsonStr = result.getResponse().getContentAsString();
+        JSONArray jsonArray = new JSONArray(jsonStr);
+        Assert.assertEquals(2, jsonArray.length());
     }
 
     @Test
-    public void PutTripsByCarId() {
+    public void PutTripsByCarId() throws Exception {
+        MvcResult result = mockMvc.perform(post(REST_URL + "/trips/" + CAR1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getMapper().writeValueAsString(TEST_TRIP)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+        String jsonStr = result.getResponse().getContentAsString();
+        Trip trip = getMapper().readValue(jsonStr, Trip.class);
+        Assert.assertEquals(trip, TEST_TRIP);
     }
 
     @Test
     public void createOrUpdateCar() {
-        Car car = carPathfinder;
+        Car car = CAR_PATHFINDER;
         car.setDescription("New Pafick");
         Car createdCar = appService.createOrUpdateCar(car);
+        CAR_PATHFINDER.setDescription("Pathfinder");
         Assert.assertNotNull(createdCar);
-        appService.deleteCar(createdCar.getId());
     }
 
     @Test

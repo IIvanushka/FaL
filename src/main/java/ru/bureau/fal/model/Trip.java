@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "trips")
@@ -49,10 +50,23 @@ public class Trip extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", insertable = false, updatable = false, nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-//    @NotNull(groups = View.Persist.class)
     private Car car;
 
     public Trip() {
+    }
+
+    public Trip(Integer id, Integer carId, LocalDate date, Float mileageC, Float mileageR, LocalTime warmupTime,
+                LocalTime prostoyTime, Float fuelLeft, boolean summer, String description) {
+        super(id);
+        this.carId = carId;
+        this.date = date;
+        this.mileageC = mileageC;
+        this.mileageR = mileageR;
+        this.warmupTime = warmupTime;
+        this.prostoyTime = prostoyTime;
+        this.fuelLeft = fuelLeft;
+        this.summer = summer;
+        this.description = description;
     }
 
     public Integer getCarId() {
@@ -125,6 +139,28 @@ public class Trip extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trip trip = (Trip) o;
+        return summer == trip.summer &&
+                Objects.equals(carId, trip.carId) &&
+                Objects.equals(date, trip.date) &&
+                Objects.equals(mileageC, trip.mileageC) &&
+                Objects.equals(mileageR, trip.mileageR) &&
+                Objects.equals(warmupTime, trip.warmupTime) &&
+                Objects.equals(prostoyTime, trip.prostoyTime) &&
+                Objects.equals(fuelLeft, trip.fuelLeft) &&
+                Objects.equals(description, trip.description);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(carId, date, mileageC, mileageR, warmupTime, prostoyTime, fuelLeft, summer, description);
     }
 
     @Override

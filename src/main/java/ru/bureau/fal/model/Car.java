@@ -54,8 +54,9 @@ public class Car extends BaseEntity {
     public Car() {
     }
 
-    public Car(Integer userId, boolean active, String description, Integer mileage, Float fuel,
+    public Car(Integer id, Integer userId, boolean active, String description, Integer mileage, Float fuel,
                Float winterCity, Float winterRoad, Float summer, Float summerRoad, Float warmup, Float prostoy, boolean summerTime) {
+        super(id);
         this.userId = userId;
         this.active = active;
         this.description = description;

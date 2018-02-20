@@ -45,8 +45,8 @@ public class RestAppController {
         return appService.getAllTripsByCarId(id);
     }
 
-    @PutMapping(value = "/trips/{carId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Trip PutTripsByCarId(@PathVariable("carId") Integer id, @Valid Trip trip) {
+    @PostMapping(value = "/trips/{carId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Trip PostTripsByCarId(@PathVariable("carId") Integer id, @RequestBody Trip trip) {
         trip.setCarId(id);
         return appService.createOrUpdateTrip(trip);
     }
