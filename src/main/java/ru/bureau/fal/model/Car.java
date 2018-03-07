@@ -40,7 +40,7 @@ public class Car extends BaseEntity {
     @Column(name = "warmup")
     private Float warmup;
 
-    @Column(name = "prostoy")
+    @Column(name = "idling")
     private Float prostoy;
 
     @Column(name = "summer_time")

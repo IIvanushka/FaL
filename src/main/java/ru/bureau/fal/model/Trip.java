@@ -1,5 +1,6 @@
 package ru.bureau.fal.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -7,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ru.bureau.fal.Util.DateTimeUtil;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -31,12 +31,14 @@ public class Trip extends BaseEntity {
     private Float mileageR = 0F;
 
     @Column(name = "warmup_time")
+    @JsonFormat(pattern = "HH:mm")
     @Convert(converter = Jsr310JpaConverters.LocalTimeConverter.class)
-    private LocalTime warmupTime = LocalTime.of(0,0,0);
+    private LocalTime warmupTime = LocalTime.of(0,30,0);
 
-    @Column(name = "prostoy_time")
+    @Column(name = "idling_time")
+    @JsonFormat(pattern = "HH:mm")
     @Convert(converter = Jsr310JpaConverters.LocalTimeConverter.class)
-    private LocalTime prostoyTime = LocalTime.of(0,0,0);;
+    private LocalTime idlingTime = LocalTime.of(1,30,0);
 
     @Column(name = "fuel_left")
     private Float fuelLeft = 0F;
@@ -56,14 +58,14 @@ public class Trip extends BaseEntity {
     }
 
     public Trip(Integer id, Integer carId, LocalDate date, Float mileageC, Float mileageR, LocalTime warmupTime,
-                LocalTime prostoyTime, Float fuelLeft, boolean summer, String description) {
+                LocalTime idlingTime, Float fuelLeft, boolean summer, String description) {
         super(id);
         this.carId = carId;
         this.date = date;
         this.mileageC = mileageC;
         this.mileageR = mileageR;
         this.warmupTime = warmupTime;
-        this.prostoyTime = prostoyTime;
+        this.idlingTime = idlingTime;
         this.fuelLeft = fuelLeft;
         this.summer = summer;
         this.description = description;
@@ -109,12 +111,12 @@ public class Trip extends BaseEntity {
         this.warmupTime = warmupTime;
     }
 
-    public LocalTime getProstoyTime() {
-        return prostoyTime;
+    public LocalTime getIdlingTime() {
+        return idlingTime;
     }
 
-    public void setProstoyTime(LocalTime prostoyTime) {
-        this.prostoyTime = prostoyTime;
+    public void setIdlingTime(LocalTime prostoyTime) {
+        this.idlingTime = prostoyTime;
     }
 
     public Float getFuelLeft() {
@@ -152,7 +154,7 @@ public class Trip extends BaseEntity {
                 Objects.equals(mileageC, trip.mileageC) &&
                 Objects.equals(mileageR, trip.mileageR) &&
                 Objects.equals(warmupTime, trip.warmupTime) &&
-                Objects.equals(prostoyTime, trip.prostoyTime) &&
+                Objects.equals(idlingTime, trip.idlingTime) &&
                 Objects.equals(fuelLeft, trip.fuelLeft) &&
                 Objects.equals(description, trip.description);
     }
@@ -160,7 +162,7 @@ public class Trip extends BaseEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(carId, date, mileageC, mileageR, warmupTime, prostoyTime, fuelLeft, summer, description);
+        return Objects.hash(carId, date, mileageC, mileageR, warmupTime, idlingTime, fuelLeft, summer, description);
     }
 
     @Override
@@ -171,7 +173,7 @@ public class Trip extends BaseEntity {
                 ", mileageC=" + mileageC +
                 ", mileageR=" + mileageR +
                 ", warmupTime=" + warmupTime +
-                ", prostoTime=" + prostoyTime +
+                ", prostoTime=" + idlingTime +
                 ", fuelLeft=" + fuelLeft +
                 ", summer=" + summer +
                 ", description='" + description + '\'' +

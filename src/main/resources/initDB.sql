@@ -42,29 +42,31 @@ CREATE TABLE cars (
   summer_city FLOAT4 DEFAULT 10   NOT NULL,
   summer_road FLOAT4 DEFAULT 10   NOT NULL,
   warmup      FLOAT4 DEFAULT 0.5  NOT NULL,
-  prostoy     FLOAT4 DEFAULT 2.5  NOT NULL,
+  idling      FLOAT4 DEFAULT 2.5  NOT NULL,
   summer_time BOOL DEFAULT TRUE   NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-INSERT INTO cars (user_id, description) VALUES (100000, 'Pathfinder');
-INSERT INTO cars (user_id, description) VALUES (100000, 'Opel');
+INSERT INTO cars (user_id, description, mileage, fuel, winter_city, winter_road, summer_city, summer_road, idling)
+VALUES (100000, 'Nissan', 98993, 26.65, 13.43, 11.43, 12.45, 10.49, 2.45);
+INSERT INTO cars (user_id, description, mileage, fuel, winter_city, winter_road, summer_city, summer_road, idling)
+VALUES (100000, 'Opel', 42040, 14.68, 12.78, 10.98, 11.43, 9.63, 2.25);
 
 CREATE TABLE trips (
-  id           INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-  car_id       INTEGER                          NOT NULL,
-  date         TIMESTAMP DEFAULT now()               NOT NULL,
-  mileage_c    FLOAT4 DEFAULT 0                 NOT NULL,
-  mileage_r    FLOAT4 DEFAULT 0                 NOT NULL,
-  warmup_time  TIME DEFAULT '00:00:00'          NOT NULL,
-  prostoy_time TIME DEFAULT '00:00:00'          NOT NULL,
-  fuel_left    FLOAT4                           NOT NULL,
-  summer       BOOL DEFAULT TRUE                NOT NULL,
-  description  TEXT,
-  timestamp    TIMESTAMP DEFAULT now()          NOT NULL,
+  id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+  car_id      INTEGER                               NOT NULL,
+  date        TIMESTAMP DEFAULT now()               NOT NULL,
+  mileage_c   FLOAT4 DEFAULT 0                      NOT NULL,
+  mileage_r   FLOAT4 DEFAULT 0                      NOT NULL,
+  warmup_time TIME DEFAULT '00:00:00'               NOT NULL,
+  idling_time TIME DEFAULT '00:00:00'               NOT NULL,
+  fuel_left   FLOAT4                                NOT NULL,
+  summer      BOOL DEFAULT TRUE                     NOT NULL,
+  description TEXT,
+  timestamp   TIMESTAMP DEFAULT now()               NOT NULL,
   FOREIGN KEY (car_id) REFERENCES cars (id) ON DELETE CASCADE
 );
 
-INSERT INTO trips(car_id, fuel_left, description) VALUES (100002,25,'Test_Trip');
-INSERT INTO trips(car_id, fuel_left, description) VALUES (100002,20,'Test_Trip2');
-INSERT INTO trips(car_id, fuel_left, description) VALUES (100003,500,'Test_Trip3');
+INSERT INTO trips (car_id, fuel_left, description) VALUES (100002, 25, 'Pafik_Test_Trip');
+INSERT INTO trips (car_id, fuel_left, description) VALUES (100002, 20, 'Pafik_Test_Trip2');
+INSERT INTO trips (car_id, fuel_left, description) VALUES (100003, 500, 'Opel_Test_Trip3');

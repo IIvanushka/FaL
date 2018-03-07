@@ -6,14 +6,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.bureau.fal.FalApplicationTests;
-import ru.bureau.fal.Util.JacksonObjectMapper;
 import ru.bureau.fal.model.Car;
 import ru.bureau.fal.model.Trip;
 import ru.bureau.fal.service.AppService;
@@ -25,7 +23,6 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,11 +55,6 @@ public class RestAppControllerTest extends FalApplicationTests {
                 .addFilter(CHARACTER_ENCODING_FILTER)
                 .build();
     }
-
-//    @Before
-//    public void setUp() throws Exception {
-//
-//    }
 
     @Test
     public void getAllUsers() throws Exception {
@@ -117,7 +109,7 @@ public class RestAppControllerTest extends FalApplicationTests {
     }
 
     @Test
-    public void PutTripsByCarId() throws Exception {
+    public void PostTripByCarId() throws Exception {
         MvcResult result = mockMvc.perform(post(REST_URL + "/trips/" + CAR1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getMapper().writeValueAsString(TEST_TRIP)))
@@ -130,12 +122,20 @@ public class RestAppControllerTest extends FalApplicationTests {
     }
 
     @Test
-    public void createOrUpdateCar() {
+    public void createOrUpdateCar() throws Exception {
         Car car = CAR_PATHFINDER;
         car.setDescription("New Pafick");
-        Car createdCar = appService.createOrUpdateCar(car);
+
+        MvcResult result = mockMvc.perform(post(REST_URL + "/cars")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getMapper().writeValueAsString(car)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+        String jsonStr = result.getResponse().getContentAsString();
+        Car createdCar = getMapper().readValue(jsonStr, Car.class);
+        Assert.assertEquals(CAR_PATHFINDER, createdCar);
         CAR_PATHFINDER.setDescription("Pathfinder");
-        Assert.assertNotNull(createdCar);
     }
 
     @Test

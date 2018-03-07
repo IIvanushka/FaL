@@ -42,22 +42,31 @@ public class RestAppController {
 
     @GetMapping(value = "/trips/{carId}")
     public List<Trip> getTripsByCarId(@PathVariable("carId") Integer id) {
+
         return appService.getAllTripsByCarId(id);
     }
 
+    @PostMapping(value = "/testtrips/{carId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Trip PostTestTripByCarId(@PathVariable("carId") Integer id, @Valid @RequestBody Trip trip) {
+        System.out.println("POST HERE!!!----------------------begin------------------------");
+        System.out.println(trip.toString());
+        System.out.println("POST HERE!!!-----------------------end-----------------------");
+        return trip;
+    }
+
     @PostMapping(value = "/trips/{carId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Trip PostTripsByCarId(@PathVariable("carId") Integer id, @RequestBody Trip trip) {
+    public Trip PostTripByCarId(@PathVariable("carId") Integer id, @Valid @RequestBody Trip trip) {
         trip.setCarId(id);
         return appService.createOrUpdateTrip(trip);
     }
 
     @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User createOrUpdateUser(@Valid User user) {
+    public User createOrUpdateUser(@Valid @RequestBody User user) {
         return userService.createOrUpdate(user);
     }
 
     @PostMapping(value = "/cars", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Car createOrUpdateCar(@Valid Car car) {
+    public Car createOrUpdateCar(@Valid @RequestBody Car car) {
         return appService.createOrUpdateCar(car);
     }
 
