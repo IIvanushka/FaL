@@ -27,6 +27,7 @@ out
 target
 .mvn
 log
+*.log
 *.patch
 mvnw
 mvnw.cmd

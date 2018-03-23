@@ -24,6 +24,7 @@ public class AppService {
     private TripRepo tripRepo;
 
     public List<Car> getAllCarsByUserId(Integer id) {
+        log.info("Getting all cars by user id - " + id.toString());
         return carRepo.getAllCarsByUserId(id);
     }
 
@@ -50,10 +51,10 @@ public class AppService {
     }
 
     public void deleteCar(int id) {
-        carRepo.delete(id);
+        carRepo.deleteById(id);
     }
 
     public void deleteTrip(int id) {
-        tripRepo.delete(id);
+        tripRepo.deleteById(id);
     }
 }

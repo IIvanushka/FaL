@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public User getById(Integer id) {
-        return userRepo.findOne(id);
+        return userRepo.findById(id).get();
     }
 
     public List<User> getAll() {
